@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Computing Optimizer</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Green Computing Optimizer</h1>
+
+    <div class="cards">
+
+        <div class="card">
+            <h2>CPU Usage</h2>
+            <p id="cpu-value">{{ cpu }}%</p>
+        </div>
+
+        <div class="card">
+            <h2>RAM Usage</h2>
+            <p id="ram-value">{{ memory }}%</p>
+        </div>
+
+        <div class="card">
+            <h2>Disk Usage</h2>
+            <p id="disk-value">{{ disk }}%</p>
+        </div>
+
+        <div class="card">
+            <h2>Battery</h2>
+            <p id="battery-value">{{ battery }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Power</h2>
+            <p id="power-value">{{ power }} W</p>
+        </div>
+
+        <div class="card">
+            <h2>Carbon</h2>
+            <p id="carbon-value">{{ carbon }} kg CO₂</p>
+        </div>
+
+        <div class="card eco-card">
+            <h2>Eco Score</h2>
+            <p id="eco-score-value">{{ eco_score }}/100</p>
+            <span id="eco-status-value">{{ eco_status }}</span>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="graph-container">
+
+    <div class="graph-card">
+        <canvas id="cpuChart"></canvas>
+    </div>
+
+    <div class="graph-card">
+        <canvas id="ramChart"></canvas>
+    </div>
+
+    <div class="graph-card">
+        <canvas id="powerChart"></canvas>
+    </div>
+
+    <div class="graph-card">
+        <canvas id="carbonChart"></canvas>
+    </div>
+
+    <div class="graph-card full-width">
+        <canvas id="ecoChart"></canvas>
+    </div>
+
+</div>
+
+<div class="recommendation-section">
+
+    <h2>Recommendations</h2>
+
+    <ul>
+
+        {% for recommendation in recommendations %}
+            <li>{{ recommendation }}</li>
+        {% endfor %}
+
+    </ul>
+
+</div>
+
+<div class="process-section">
+
+    <h2>Running Processes</h2>
+
+    <table>
+
+        <tr>
+            <th>Process</th>
+            <th>CPU %</th>
+            <th>RAM %</th>
+            <th>Energy</th>
+        </tr>
+
+        {% for process in processes %}
+
+        <tr>
+            <td>{{ process.name }}</td>
+            <td>{{ process.cpu }}</td>
+            <td>{{ process.memory }}</td>
+            <td>{{ process.energy }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <div class="download-section">
+
+    <a href="/download-csv">
+        <button class="download-btn">
+            Download CSV Report
+        </button>
+    </a>
+
+    <a href="/download-pdf">
+        <button class="download-btn">
+            Download PDF Report
+        </button>
+    </a>
+
+</div>
+
+</div>
+<div class="prediction-card">
+
+    <h2>Predicted CPU Usage</h2>
+
+    <p>
+        {{ predicted_cpu }}%
+    </p>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+
+</body>
+</html>
