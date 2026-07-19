@@ -1,5 +1,5 @@
 import pandas as pd
-from platform import processor
+
 import sqlite3
 
 from flask import jsonify, send_file
@@ -24,10 +24,12 @@ from reportlab.platypus import (
 )
 
 from reportlab.lib.styles import getSampleStyleSheet
-from ml.prediction import predict_cpu_usage
+from ml.prediction import (
+    predict_cpu_usage,
+    predict_power_usage
+)
 
 
-from flask import send_file
 
 app = Flask(__name__)
 
@@ -57,10 +59,11 @@ def home():
     )
 
     recommendations = generate_recommendations(
-    system_data
+        system_data
     )
 
-    predicted_cpu_usage = "ML Disabled"
+    predicted_cpu_usage = predict_cpu_usage()
+    predicted_power = predict_power_usage()
 
     processes = get_top_processes()
 
@@ -81,8 +84,8 @@ def home():
         eco_status=eco_status,
         recommendations=recommendations,
         processes=processes,
-        predicted_cpu=predicted_cpu_usage
-        
+        predicted_cpu=predicted_cpu_usage,
+        predicted_power=predicted_power
     )
 
 
@@ -124,7 +127,6 @@ def chart_data():
 
 @app.route("/live-data")
 def live_data():
-
     system_data = collect_system_data()
 
     power_usage = calculate_power_consumption(

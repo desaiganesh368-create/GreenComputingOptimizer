@@ -1,10 +1,15 @@
+let cpuChart;
+let ramChart;
+let powerChart;
+let carbonChart;
+let ecoChart;
 async function loadCharts() {
 
     const response = await fetch("/chart-data");
 
     const data = await response.json();
 
-    createChart(
+    cpuChart=createChart(
         "cpuChart",
         "CPU Usage",
         data.timestamps,
@@ -12,7 +17,7 @@ async function loadCharts() {
         "rgba(255,99,132,1)"
     );
 
-    createChart(
+    ramChart=createChart(
         "ramChart",
         "RAM Usage",
         data.timestamps,
@@ -20,7 +25,7 @@ async function loadCharts() {
         "rgba(54,162,235,1)"
     );
 
-    createChart(
+    powerChart=createChart(
         "powerChart",
         "Power Consumption",
         data.timestamps,
@@ -28,7 +33,7 @@ async function loadCharts() {
         "rgba(255,206,86,1)"
     );
 
-    createChart(
+    carbonChart=createChart(
         "carbonChart",
         "Carbon Emission",
         data.timestamps,
@@ -36,13 +41,42 @@ async function loadCharts() {
         "rgba(75,192,192,1)"
     );
 
-    createChart(
+    ecoChart=createChart(
         "ecoChart",
         "Eco Score",
         data.timestamps,
         data.eco_score,
         "rgba(153,102,255,1)"
     );
+}
+
+async function updateCharts(){
+
+    const response = await fetch(
+        "/chart-data"
+    );
+
+    const data = await response.json();
+
+    cpuChart.data.labels = data.timestamps;
+    cpuChart.data.datasets[0].data = data.cpu;
+    cpuChart.update();
+
+    ramChart.data.labels = data.timestamps;
+    ramChart.data.datasets[0].data = data.memory;
+    ramChart.update();
+
+    powerChart.data.labels = data.timestamps;
+    powerChart.data.datasets[0].data = data.power;
+    powerChart.update();
+
+    carbonChart.data.labels = data.timestamps;
+    carbonChart.data.datasets[0].data = data.carbon;
+    carbonChart.update();
+
+    ecoChart.data.labels = data.timestamps;
+    ecoChart.data.datasets[0].data = data.eco_score;
+    ecoChart.update();
 }
 
 
@@ -54,7 +88,7 @@ function createChart(
     color
 ){
 
-    new Chart(
+    return new Chart(
         document.getElementById(canvasId),
         {
             type: "line",
@@ -122,5 +156,12 @@ async function updateMetrics() {
 updateMetrics();
 setInterval(
     updateMetrics,
+    5000
+);
+
+loadCharts();
+
+setInterval(
+    updateCharts,
     5000
 );

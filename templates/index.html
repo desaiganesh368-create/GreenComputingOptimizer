@@ -151,6 +151,26 @@
 
 </div>
 
+<div class="prediction-card">
+
+    <h2>Predicted Power Usage</h2>
+
+    <p>
+        {{ predicted_power }} W
+    </p>
+
+</div>
+
+<div class="prediction-card">
+    <h2>Linear Regression CPU Prediction</h2>
+    <p>{{ predicted_cpu }}%</p>
+</div>
+
+<div class="prediction-card">
+    <h2>Random Forest CPU Prediction</h2>
+    <p>{{ predicted_cpu_rf }}%</p>
+</div>
+
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 
 
